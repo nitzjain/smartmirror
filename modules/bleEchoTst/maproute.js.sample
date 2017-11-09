@@ -1,0 +1,26 @@
+
+
+Module.register("maproute", {
+        defaults: {
+                latitude: '37.3382', // City latitude. Use google to get these coordinates
+                longitude: '-121.8863', // City longitude
+                map_zoom: '12', // 1 - 21
+                map_layer: 'TrafficFlow', 
+                map_size: '5000', // Using this for both length and width
+        map_key: "Ah3Jmn7HDS7v5a2r5towcKAZCNfuPR4nG2VO24x0iqBCP3IOYHL6HMR60QmXBQOy",
+                updateInterval: 300000 // 5 min refresh
+        },
+        getDom: function() {
+                var wrapper = '';
+                wrapper = document.createElement("img");
+                // The Math.random() calls are to place a random pushpin on the map and make the updateDom() call refresh
+                wrapper.src = "http://dev.virtualearth.net/REST/v1/Imagery/Map/Road/" + this.config.latitude + "," + this.config.longitude + "/" + this.config.map_zoom + "?mapSize=" + this.config.map_size + "," + this.config.map_size + "&pp=" + Math.random() + "," + Math.random() + "&ml=" + this.config.map_layer + "&key=" + this.config.map_key;
+                return wrapper;
+        },
+	start: function() {
+		var self = this;
+		setInterval(function() {
+			self.updateDom(5000); // I set a 5 second refresh here for testing.
+		}, this.config.updateInterval);
+	},
+});
